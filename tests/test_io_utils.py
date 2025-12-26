@@ -1,10 +1,14 @@
 """ 
 Test unitaire de la fonction de lecture de la matrice de comptage ARCHS4
+
 Utilisation du fichier ARCHS4 mini --> version réduite de ARCHS4
-vérifie que : 
+Contient 5 gènes et 14 tissus/cellules
+Vérifie que : 
 - le fichier ARCHS4 mini est correctement lu
 - les structures retournées ont le bon type
 - les dimensions de la matrices sont correctes 
+
+Pour lancer le test : PYTHONPATH=src pytest -s -q tests/test_io_utils.py
 """
 
 from io_utils import load_archs4_counts_only
