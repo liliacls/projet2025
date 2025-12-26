@@ -33,17 +33,18 @@ import gzip
 
 # Chemin vers le fichier ARCHS4 (.tsv ou tsv.gz)
 
-def load_archs4_counts_only(path="ARCHS4.tsv.gz"):
-
+def load_archs4(path="ARCHS4.tsv.gz"):
     opener = gzip.open if path.endswith(".gz") else open
-    
+
     with opener(path, "rt", encoding="utf-8") as f:
 
 # Lecture de l'en tête
 
             header = f.readline().rstrip("\n").split("\t")
+            if len(header) < 3:
+                    raise ValueError
+           
             tissues = header[2:]
-        
             data = {}
             
 # Parcours des lignes du fichier une à une 
