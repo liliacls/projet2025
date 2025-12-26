@@ -20,11 +20,10 @@ GENE2   ...       ...
 Seules les lignes avec stat = "count" sont conservées
 Les statistiques (mean, std, min, ...) sont ignorées
 
-return (tuple):
+return (tuple) :
 - tissues (liste) --> nom des tissus/cellules (colonnes)
-- data (dict) --> { gene : [ comptages par tissu/cellule ]}
+- data (dict) --> { gene : [comptages par tissu/cellule]}
 
-Exemple : (["tissue1, tissue2"], { "GENE1" : [2,10,15], "GENE2" : [...]})
 Note : par convention, les cellules sont implicitement considérées comme des tissus.
 """
 
@@ -36,12 +35,11 @@ import gzip
 
 def load_archs4_counts_only(path="ARCHS4.tsv.gz"):
 
-# CAS 1 : Fichier compressé (.tsv.gz)
+    opener = gzip.open if path.endswith(".gz") else open
+    
+    with opener(path, "rt", encoding="utf-8") as f:
 
- if path.endswith(".gz"):
-        with gzip.open(path, "rt", encoding="utf-8") as f:
-            
-# Lecture de l'en tête pour extraire les tissus et cellules
+# Lecture de l'en tête
 
             header = f.readline().rstrip("\n").split("\t")
             tissues = header[2:]
@@ -66,59 +64,15 @@ def load_archs4_counts_only(path="ARCHS4.tsv.gz"):
 # Gestion des différents formats des valeurs de comptage
 
                 counts = []
-                for x in parts[2:]:
+                for value in parts[2:]:
                     try:
-                        counts.append(int(x))
+                        counts.append(int(value))
                     except ValueError:
                         try:
-                            counts.append(float(x))
+                            counts.append(float(value))
                         except ValueError:
                             counts.append(0)
                 
                 data[gene] = counts
             
             return tissues, data
-        
-        
-# CAS 2 : Fichier non compressé (.tsv)  
-   
- else:
-        with open(path, "r", encoding="utf-8") as f:
-            
-# Lecture de l'en-tête pour ectraire les tissues et cellules
-
-            header = f.readline().rstrip("\n").split("\t")
-            tissues = header[2:]
-            data = {}
-
-# Parcours des lignes du fichier une à une
-
-            for line in f:
-                parts = line.rstrip("\n").split("\t")
-                if len(parts) < 3:
-                    continue
-                
-                gene = parts[0]
-                stat = parts[1].strip()
-
-# Seules les lignes "count" sont conservées
-                
-                if stat != "count":
-                    continue
-                
-# Gestion des différents formats des valeurs de comptage
-
-                counts = []
-                for x in parts[2:]:
-                    try:
-                        counts.append(int(x))
-                    except ValueError:
-                        try:
-                            counts.append(float(x))
-                        except ValueError:
-                            counts.append(0)
-                
-                data[gene] = counts
-            
-            return tissues, data
-
