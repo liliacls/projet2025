@@ -73,9 +73,3 @@ def test_min_max_items():
 
     assert max_val == pytest.approx(1218.2)
     assert set(max_items) == {"tissue1"}
-
-    
-
-
-
-
