@@ -9,7 +9,7 @@ def total_count_gene(data):
 # return (dico) --> {gène : somme des comptages des tissus/cellules}
 # Exemple : {"GENE1" : [27], "GENE2" : [...]}
 
-def total_count_tissue(data, tissues):
+def total_count_tissue(tissues, data):
 
 # Fonction qui calcule le nombre de comptages pour chaque tissu/cellule pour tous les gènes
 # data (dico) --> {gène : comptages pour chaque tissu/cellule}
