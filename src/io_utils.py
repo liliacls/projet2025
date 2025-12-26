@@ -71,7 +71,7 @@ def load_archs4_counts_only(path="ARCHS4.tsv.gz"):
                         counts.append(int(x))
                     except ValueError:
                         try:
-                            counts.append(int(float(x)))
+                            counts.append(float(x))
                         except ValueError:
                             counts.append(0)
                 
@@ -114,7 +114,7 @@ def load_archs4_counts_only(path="ARCHS4.tsv.gz"):
                         counts.append(int(x))
                     except ValueError:
                         try:
-                            counts.append(int(float(x)))
+                            counts.append(float(x))
                         except ValueError:
                             counts.append(0)
                 
