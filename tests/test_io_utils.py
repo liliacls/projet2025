@@ -10,7 +10,7 @@ Vérifie que :
 
 Pour lancer le test : PYTHONPATH=src pytest -s -q tests/test_io_utils.py
 """
-
+import pytest
 from io_utils import load_archs4_counts_only
 
 def test_load_archs4_counts_only():
@@ -25,7 +25,3 @@ def test_load_archs4_counts_only():
 # Chaque gène doit posseder un nombre de comptages égal au nombre de tissus/cellules
    for gene, counts in data.items():
      assert len(counts) == len(tissues)
-
-# Si toutes les assertions OK --> test réussi 
-print("Test réussi ✓")
-
