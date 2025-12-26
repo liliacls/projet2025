@@ -7,7 +7,7 @@ def total_count_gene(data):
     return {gene: sum(counts) for gene, counts in data.items()}
 
 # return (dico) --> {gène : somme des comptages des tissus/cellules}
-# Exemple : {"GENE1" : [27], "GENE2"...]}
+# Exemple : {"GENE1" : [27], "GENE2" : [...]}
 
 def total_count_tissue(data, tissues):
 
@@ -23,8 +23,11 @@ def total_count_tissue(data, tissues):
 # Parcours chaque gène et additionne les comptages par tissu/cellule
 
     for counts in data.values():
-        for i, value in enumerate(counts):
-            totals[tissues[i]] = totals[tissues[i]] + value
+        if len(counts) != len(tissues):
+            raise ValueError
+
+        for tissue, value in zip(tissues, counts):
+            totals[tissue] += value
 
     return totals
 
