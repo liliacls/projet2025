@@ -87,17 +87,3 @@ def plot_gene_total(gene_totals, top_n=10, log_scale=True):
     plt.tight_layout()
 
 
-# MAIN : chargement des données + visualisation
-
-
-if __name__ == "__main__":
-    data, tissues = load_archs4("data/ARCHS4.tsv.gz")
-
-    tissue_totals = total_count_tissue(data, tissues)
-    plot_tissue_total(tissue_totals)
-
-    gene_totals = total_count_gene(data)
-    plot_gene_total(gene_totals)
-    plt.show()
-
-
