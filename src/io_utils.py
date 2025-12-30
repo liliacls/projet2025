@@ -1,10 +1,10 @@
 
 """ 
-Entrée : Lecture de la matrice de comptage ARCHS4
+Input : Reading an ARCHS4-like gene expression matrix
 
-Le fichier d'entrée peut être au format .tsv ou .tsv.gz
+The input file can be provide in either .tsv ou .tsv.gz format
 
-La mise en forme doit être :
+The expected matrix structure is the following :
 
                  tissue1    tissu2    tissu3    ...
 GENE1   count     63         ...
@@ -17,29 +17,33 @@ GENE1   50%       21
 GENE1   75%       99
 GENE2   ...       ...
 
-Seules les lignes avec stat = "count" sont conservées
-Les statistiques (mean, std, min, ...) sont ignorées
+Only rows with stat = "count" are retained
+All other statistics are ignored
 
 return (tuple) :
-- tissues (liste) --> nom des tissus/cellules (colonnes)
-- data (dict) --> { gene : [comptages par tissu/cellule]}
+- tissues (list)--> Names of tissues/cells corresponding to the columns of the matrix
+- data (dict)--> Dictionary mapping each gene to a list of counts per tissue/cell.
 
-Note : par convention, les cellules sont implicitement considérées comme des tissus.
+ Example : 
+- tissues = ['tissue1', 'tissue2', 'tissue3']
+- data = { 'GENE1': [63, 120, 5],
+           'GENE2': [0, 15, 2],
+           'GENE3': [42, 87, 10]}
+
+Note : 
+- Each value in the count list corresponds to a tissue/cell in the same positional order as the 'tissues' list.
+- By convention, cells are implicitly considered as tissues.
 """
 
-# Module permettant de lire des fichiers .gz sans décompression
-
+ # Module for reading .gz files without manual decompression
 import gzip
-
-# Chemin vers le fichier ARCHS4 (.tsv ou tsv.gz)
 
 def load_archs4(path="ARCHS4.tsv.gz"):
     opener = gzip.open if path.endswith(".gz") else open
 
     with opener(path, "rt", encoding="utf-8") as f:
-
-# Lecture de l'en tête
-
+            
+             # Read header
             header = f.readline().rstrip("\n").split("\t")
             if len(header) < 3:
                     raise ValueError
@@ -47,8 +51,7 @@ def load_archs4(path="ARCHS4.tsv.gz"):
             tissues = header[2:]
             data = {}
             
-# Parcours des lignes du fichier une à une 
-
+             # Iterate over file lines
             for line in f:
                 parts = line.rstrip("\n").split("\t")
                 if len(parts) < 3:
@@ -57,13 +60,11 @@ def load_archs4(path="ARCHS4.tsv.gz"):
                 gene = parts[0]
                 stat = parts[1].strip()
 
-# Seules les lignes "count" sont conservées
-
+                 # Keep only "count" rows
                 if stat != "count":
                     continue
-                
-# Gestion des différents formats des valeurs de comptage
 
+                 # Replace missing values with 0
                 counts = []
                 for value in parts[2:]:
                     try:
