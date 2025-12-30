@@ -1,75 +1,82 @@
-
 """
-Tests unitaires des fonctions de calcul statistique sur la matrice de comptage
-- total_count_gene : calcul du nombre total de comptes par gène
-- total_count_tissue : calcul du nombre total de comptes par tissu/cellule
-- min_max_items : # Vérification de la valeur maximale/minimale et du/des tissu(s) associé(s) + avec gestion des égalités
+Unit tests for statistical computation functions on a count matrix
+An artificial dataset is used
 
-Utilisation d'un jeu de données artificiel 
-Permet de valider :
-- le calcul correct des totaux par gène
-- le calcul correct des totaux par tissu
-- la gestion des valeurs flottantes
-- la prise en compte des cas d'égalité 
+- total_count_gene : computation of the total number of counts per gene
+- total_count_tissue : computation of the total number of counts per tissue/cell
+- min_max_items : verification of minimum and maximum values and their associated tissues/genes
 
-Pour lancer les tests : PYTHONPATH=src pytest -s -q tests/test_stats_utils.py
+This allows validation of:
+- correct computation of total counts per gene
+- correct computation of total counts per tissue
+- handling of floating-point values
+- handling of tie cases
+
+To run the tests: PYTHONPATH=src pytest -s -q tests/test_stats_utils.py
 """
-
 import pytest
 from stats_utils import total_count_gene, total_count_tissue, min_max_items
 
-# Test unitaire pour vérifier la fonction total_count_gene
-
-def test_total_count_gene ():
-    data1 = {
-        "GENE1" : [150.3, 25, 7.1, 5],  # total = 187.4
-        "GENE2" : [734.9, 36, 2, 4.5],  # total = 777.4
-        "GENE3" : [333, 54.2, 5, 4.6 ]  # total = 396.8
-    }
+ # Unit test for the total_count_gene function
+def test_total_count_gene():
+    data1 = { 'GENE1': [150.3, 25.0 , 7.1, 5.0],     # total = 187.4
+              'GENE2': [734.9, 36.0, 2.0, 4.5],      # total = 777.4
+              'GENE3': [333.0, 54.2, 5.0, 4.6],      # total = 396.8
+              'GENE4': [180.0, 0.0, 7.4, 0.0]}       # total = 187.4
+    
     result = total_count_gene(data1)
     
-# Vérification des totaux calculés pour chaque gène
+     # Verification of total counts computed for each gene
+    assert result == { 'GENE1': pytest.approx(187.4),
+                       'GENE2': pytest.approx(777.4),
+                       'GENE3': pytest.approx(396.8),
+                       'GENE4': pytest.approx(187.4)}
+
+
+ # Unit test for the total_count_tissue function
+    tissues = ['tissue1', 'tissue2', 'tissue3', 'tissue4']
+    data1 = { 'GENE1': [150.3, 25.0, 7.1, 5.0],
+              'GENE2': [734.9, 36.0, 2.0, 4.5],
+              'GENE3': [333.0, 54.2, 5.0, 4.6],
+              'GENE4': [180.0, 0.0, 7.4, 0.0]}
     
-    assert result == {"GENE1" : pytest.approx(187.4), 
-                      "GENE2" : pytest.approx(777.4), 
-                      "GENE3" : pytest.approx(396.8) }
+    result = total_count_tissue(tissues, data1)
+    
+     # Expected total counts per tissue: 
+     # - tissue1 : 150.3 + 734.9 + 333.0 + 180.0 = 1398.2
+     # - tissue2 : 25.0 + 36.0 + 54.2 + 0.0 = 115.2
+     # - tissue3 : 7.1 + 2.0 + 5.0 + 7.4 = 21.5
+     # - tissue4 : 5.0 + 4.5 + 4.6 + 0.0 = 14.1
+    
+    assert result == { 'tissue1': pytest.approx(1398.2),
+                       'tissue2': pytest.approx(115.2),
+                       'tissue3': pytest.approx(21.5),
+                       'tissue4': pytest.approx(14.1)}
 
-# Test unitaire pour vérifier la fonction total_count_tissue
-
-def test_total_count_tissue():
-    tissues = ["tissue1", "tissue2", "tissue3", "tissue4"]
-    data1 = {
-        "GENE1" : [150.3, 25, 7.1, 5], 
-        "GENE2" : [734.9, 36, 2, 4.5],     
-        "GENE3" : [333, 54.2, 5, 4.6 ]    
-    }
-    result = total_count_tissue(data1, tissues)
-
-# Totaux attendues par tissu : 
-# - tissue1 : 150.3 + 734.9 + 333 = 1218.2
-# - tissue2 : 25 + 36 + 54.2 = 115.2
-# - tissue3 : 7.1 + 2 + 5 = 14.1
-# - tissue4 : 5 + 4.5 + 4.6 = 14.1
-
-    assert result == {"tissue1" : pytest.approx(1218.2), 
-                      "tissue2" : pytest.approx(115.2) , 
-                      "tissue3" : pytest.approx(14.1), 
-                      "tissue4" : pytest.approx(14.1)}
-
-# Test unitaire pour vérifier la fonction min_max_items
-
-def test_min_max_items():
-    tissue_totals = {
-        "tissue1": 1218.2,
-        "tissue2": 115.2,
-        "tissue3": 14.1,
-        "tissue4": 14.1,
-    }
-
+ # Unit test for min_max_items with ties on tissues
+def test_min_max_items_tissues():
+    tissue_totals = { 'tissue1': 1398.2,
+                      'tissue2': 1398.2,
+                      'tissue3': 21.5,
+                      'tissue4': 14.1}
+    
     min_items, min_val, max_items, max_val = min_max_items(tissue_totals)
     
     assert min_val == pytest.approx(14.1)
-    assert set(min_items) == {"tissue3", "tissue4"}
+    assert set(min_items) == {"tissue4"}
+    assert max_val == pytest.approx(1398.2)
+    assert set(max_items) == {"tissue1", "tissue2"}
 
-    assert max_val == pytest.approx(1218.2)
-    assert set(max_items) == {"tissue1"}
+ # Unit test for min_max_items with ties on genes
+def test_min_max_items_genes():
+    gene_totals = { 'GENE1': 187.4,
+                    'GENE2': 777.4,
+                    'GENE3': 396.8,
+                    'GENE4': 187.4}
+     
+    min_items, min_val, max_items, max_val = min_max_items(gene_totals)
+    
+    assert min_val == pytest.approx(187.4)
+    assert set(min_items) == {"GENE1", "GENE4"}
+    assert max_val == pytest.approx(777.4)
+    assert set(max_items) == {"GENE2"}

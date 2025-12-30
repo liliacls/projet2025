@@ -1,53 +1,83 @@
-def total_count_gene(data):
+"""
+Function that computes the total number of counts for each gene across all tissues/cells
+Return (dict) --> {gene: total count across all tissues/cells}
+Example : {'GENE1' : 188, 'GENE2' : ...}
+"""
 
-# Fonction qui calcule le nombre total de comptages pour chaque gène dans tous les tissus/cellules
-# data --> dico {gène : liste des comptages pour chaque tissu/cellule}
-# Exemple : {"GENE1": [2,10,15], "GENE2...]}
-    
+def total_count_gene(data):
     return {gene: sum(counts) for gene, counts in data.items()}
 
-# return (dico) --> {gène : somme des comptages des tissus/cellules}
-# Exemple : {"GENE1" : 27, "GENE2" : ...}
+""" 
+Function that computes the total number of counts for each tissue/cell across all genes
+Return (dict) --> {tissue/cell: total count across all genes}
+Example : { 'tissue1': 145,
+            'tissue2': 367,
+            'tissue3': 12}
+"""
 
 def total_count_tissue(tissues, data):
 
-# Fonction qui calcule le nombre de comptages pour chaque tissu/cellule pour tous les gènes
-# data (dico) --> {gène : comptages pour chaque tissu/cellule}
-# tissues (liste) --> noms des tissus/cellules dans le même ordre que les comptages dans data
-# Exemple : ["tissue-trachea", "tissue-lymphoblastic"...]
-
-# Nouveau dico avec tous les tissus/cellules à 0
-
+     # Initialize a dictionary with all tissues/cells set to 0
     totals = {t: 0 for t in tissues}
 
-# Parcours chaque gène et additionne les comptages par tissu/cellule
-
+     # Iterate over each gene and accumulate counts per tissue/cell
     for counts in data.values():
         if len(counts) != len(tissues):
-            raise ValueError
+            raise ValueError("Counts length does not match number of tissues")
 
         for tissue, value in zip(tissues, counts):
             totals[tissue] += value
 
     return totals
 
-# return (dico) --> {tissus/cellules : somme totale des comptages}
-# Exemple : {"tissues-trachea" :[150], "tissue-lymphoblastic"...}
+"""
+Function that identifies the keys associated with the minimum and maximum values in a dictionary
 
-def min_max_items(d):
+If multiple keys share the same minimum or maximum value, only the first entries are returned (up to a maximum of 10)
 
-# Fonction qui identifie les clefs associées aux valeurs minimale et maximale dans un dico
+Return (tuples) --> 
+- min_items (list): keys with the minimum value (max 10)
+- min_val (int/float): minimum value
+- max_items (list): keys with the maximum value (max 10)
+- max_val (int/float): maximum value 
+"""
 
+def min_max_items(d, max_limit = 10):
+   
     min_val = min(d.values())  
     max_val = max(d.values())
 
-    min_items = [k for k, v in d.items() if v == min_val]
-    max_items = [k for k, v in d.items() if v == max_val]
+    min_items = []
+    max_items = []
+
+    for k, v in d.items():
+        if v == min_val and len(min_items) < max_limit: 
+            min_items.append(k)
+        if v == max_val and len(max_items) < max_limit:
+            max_items.append(k)
 
     return min_items, min_val, max_items, max_val
 
- # return (tuples) --> 
- # min_items (liste): clés avec la valeur minimale
- # min_val (float/int): valeur minimale
- # max_items (liste): clés avec la valeur maximale
- # max_val (float/int): valeur maximale 
+"""
+Function that summarizes minimum and maximum total counts for both genes and tissues/cells
+
+"""
+
+def summarize_min_max(tissues, data, max_limit = 10):
+    
+    gene_totals = total_count_gene(data)
+    min_genes, min_gene_val, max_genes, max_gene_val = min_max_items(gene_totals, max_limit) 
+
+    tissue_totals = total_count_tissue(tissues, data)
+    min_tissues, min_tissue_val, max_tissues, max_tissue_val = min_max_items(tissue_totals, max_limit)
+
+    return {
+        'genes': {
+            'min': {'names': min_genes, 'value': min_gene_val},
+            'max': {'names': max_genes, 'value': max_gene_val}
+        },
+        'tissues': {
+            'min': {'names': min_tissues, 'value': min_tissue_val},
+            'max': {'names': max_tissues, 'value': max_tissue_val}
+        }
+    }
