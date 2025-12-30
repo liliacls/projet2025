@@ -1,27 +1,33 @@
-""" 
-Test unitaire de la fonction de lecture de la matrice de comptage ARCHS4
-
-Utilisation du fichier ARCHS4 mini --> version réduite de ARCHS4
-Contient 5 gènes et 14 tissus/cellules
-Vérifie que : 
-- le fichier ARCHS4 mini est correctement lu
-- les structures retournées ont le bon type
-- les dimensions de la matrices sont correctes 
-
-Pour lancer le test : PYTHONPATH=src pytest -s -q tests/test_io_utils.py
 """
-import pytest
-from io_utils import load_archs4_counts_only
+Unit test for the ARCHS4 count matrix loading function.
 
-def test_load_archs4_counts_only():
+Uses a reduced ARCHS4 file (mini version) containing 5 genes and 14 tissues/cells.
+ 
+Checks that:
+- the file is correctly read
+- the returned objects have the correct types
+- the dimensions of the matrix are consistent
 
-# Chargement du fichier de test 
-   tissues, data = load_archs4_counts_only("data/mini_archs4.tsv.gz")
+To run the test:
+PYTHONPATH=src pytest -s -q tests/test_io_utils.py
+"""
 
-# Type des objets retournés --> tissues = liste, data = dico
-   assert isinstance(tissues, list)
-   assert isinstance(data, dict)
+from io_utils import load_archs4
 
-# Chaque gène doit posseder un nombre de comptages égal au nombre de tissus/cellules
-   for gene, counts in data.items():
-     assert len(counts) == len(tissues)
+def test_load_archs4():
+
+    # Load test file
+    tissues, data = load_archs4("data/mini_archs4.tsv.gz")
+
+    # Check returned object types --> tissues = list, data = dict
+    assert isinstance(tissues, list)
+    assert isinstance(data, dict)
+
+    # Each gene must have as many counts as tissues/cells
+    for gene, counts in data.items():
+        assert len(counts) == len(tissues)
+
+    # Printed ONLY if all assertions pass
+    print("mini-ARCHS4 loading test passed successfully ✓")
+
+    
