@@ -29,5 +29,3 @@ def test_load_archs4():
 
     # Printed ONLY if all assertions pass
     print("mini-ARCHS4 loading test passed successfully ✓")
-
-    
