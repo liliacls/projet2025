@@ -36,5 +36,3 @@ def test_load_matrix():
 
     # Printed only if all assertions pass
     print("Loading test passed successfully ✓")
-
-    
