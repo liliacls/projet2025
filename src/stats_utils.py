@@ -1,74 +1,114 @@
-"""
-Function that computes the total number of counts for each gene across all tissues/cells
-Return (dict) --> {gene: total count across all tissues/cells}
-Example : {'GENE1' : 188, 'GENE2' : ...}
-"""
-
 def total_count_gene(data):
-    return {gene: sum(counts) for gene, counts in data.items()}
+    """
+    Compute the total number of counts for each gene across all tissues/cells
 
-""" 
-Function that computes the total number of counts for each tissue/cell across all genes
-Return (dict) --> {tissue/cell: total count across all genes}
-Example : { 'tissue1': 145,
-            'tissue2': 367,
-            'tissue3': 12}
-"""
+    Returns
+    ------
+    dict[str, float]
+    Dictionary mapping each gene to the sum of its counts across all tissues/cells
+
+    Example
+    -------
+    {'GENE1' : 188.0, 'GENE2' : ...}
+    """
+
+    return {gene: sum(counts) for gene, counts in data.items()}
 
 def total_count_tissue(tissues, data):
 
-     # Initialize a dictionary with all tissues/cells set to 0
-    totals = {t: 0 for t in tissues}
+    """ 
+    Compute the total number of counts for each tissue/cell across all genes
 
-     # Iterate over each gene and accumulate counts per tissue/cell
+    Returns 
+    ------
+    dict[str, float] 
+    Dictionary mapping each tissue/cell to the total count across all genes
+
+    Example
+    -------
+    {'tissue1': 145.0, 'tissue2': 367.0, 'tissue3': 12.0 ...}
+    """
+
+    # Initialize a dictionary with all tissues/cells set to 0.0
+    totals = {t: 0.0 for t in tissues}
+
+    # Iterate over each gene and accumulate counts per tissue/cell
     for counts in data.values():
         if len(counts) != len(tissues):
             raise ValueError("Counts length does not match number of tissues")
-
+        
+        # Add each count to the corresponding tissue/cell total
         for tissue, value in zip(tissues, counts):
             totals[tissue] += value
 
     return totals
 
-"""
-Function that identifies the keys associated with the minimum and maximum values in a dictionary
+def min_max_items(d, max_limit=10):
 
-If multiple keys share the same minimum or maximum value, only the first entries are returned (up to a maximum of 10)
+    """
+    Identify the keys associated with the minimum and maximum values in a dictionary
 
-Return (tuples) --> 
-- min_items (list): keys with the minimum value (max 10)
-- min_val (int/float): minimum value
-- max_items (list): keys with the maximum value (max 10)
-- max_val (int/float): maximum value 
-"""
+    If multiple keys share the same minimum or maximum value, up to 'max_limit' keys are returned 
 
-def min_max_items(d, max_limit = 10):
+    Returns
+    ------
+    tuples --> 
+    - min_items (list): Keys with the minimum value (up to max_limit)
+    - min_val (float): Minimum value found in the dictionary
+    - max_items (list): Keys with the maximum value (up to max_limit)
+    - max_val (float): maximum value found in the dictionary
+    """
    
+    # Determine the minimum and maximum values in the dictionary
     min_val = min(d.values())  
     max_val = max(d.values())
 
+    # Lists to store keys associated with min and max values
     min_items = []
     max_items = []
 
     for k, v in d.items():
+
+        # Collect keys with the minimum value (up to max_limit)
         if v == min_val and len(min_items) < max_limit: 
             min_items.append(k)
+            
+        # Collect keys with the maximum value (up to max_limit)
         if v == max_val and len(max_items) < max_limit:
             max_items.append(k)
 
     return min_items, min_val, max_items, max_val
 
-"""
-Function that summarizes minimum and maximum total counts for both genes and tissues/cells
+def summarize(tissues, data, max_limit = 10):
+    """
+    Summarize minimum and maximum total counts for both genes and tissues/cells
+    
+    This function computes total counts per gene and per tissue/cell, 
+    then identifies the genes and tissues with the minimum and maximum total counts
 
-"""
-
-def summarize_min_max(tissues, data, max_limit = 10):
+    Returns
+    ------
+    dict --> Structured summary dictionary with the following format:
+        {
+            "genes": {
+                "min": {"names": [...], "value": float},
+                "max": {"names": [...], "value": float}
+            },
+            "tissues": {
+                "min": {"names": [...], "value": float},
+                "max": {"names": [...], "value": float}
+            }
+        }
+    """
     
     gene_totals = total_count_gene(data)
+
+    # Identify genes with minimum and maximum total counts
     min_genes, min_gene_val, max_genes, max_gene_val = min_max_items(gene_totals, max_limit) 
 
     tissue_totals = total_count_tissue(tissues, data)
+
+    # Identify tissues/cells with minimum and maximum total counts
     min_tissues, min_tissue_val, max_tissues, max_tissue_val = min_max_items(tissue_totals, max_limit)
 
     return {

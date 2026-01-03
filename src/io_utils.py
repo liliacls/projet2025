@@ -20,19 +20,25 @@ GENE2   ...       ...
 Only rows with stat == "count" are retained
 All other statistics are ignored
 
-return (tuple) :
-- tissues (list) --> Names of tissues/cells corresponding to the columns of the matrix
-- data (dict) --> Dictionary mapping each gene to a list of counts per tissue/cell
+Returns
+-------
+tuples -->
+- tissues : list[str]
+  Names of tissues/cells corresponding to the columns of the matrix
+- data : dict[str, list[float]]
+  Dictionary mapping each gene to a list of counts per tissue/cell
 
- Example : 
+ Example
+ -------
 - tissues = ['tissue1', 'tissue2', 'tissue3']
 - data = { 'GENE1': [63, 120, 5],
            'GENE2': [0, 15, 2],
            'GENE3': [42, 87, 10]}
 
-Note : 
-- Each value in the count list corresponds to a tissue/cell in the same positional order as the 'tissues' list.
-- By convention, cells are implicitly considered as tissues.
+Note
+----
+Each value in the count list corresponds to a tissue/cell in the same positional order as the 'tissues' list
+By convention, cells are implicitly considered as tissues
 """
 
 # Module for reading .gz files without manual decompression
