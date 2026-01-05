@@ -1,9 +1,9 @@
 """ 
-Load an ARCHS4-like gene expression matrix
+Load an ARCHS4-like gene expression matrix.
 
-The input file can be provided in either .tsv or .tsv.gz format
+The input file can be provided in either .tsv or .tsv.gz format.
 
-The expected matrix structure (tab-separated) : 
+The expected matrix structure (tab-separated): 
 
                  tissue1    tissu2    tissu3    ...
 GENE1   count     63         ...
@@ -36,8 +36,8 @@ tuples :
 
 Note
 ----
-Each value in the count list corresponds to a tissue/cell in the same positional order as the 'tissues' list
-By convention, cells are implicitly considered as tissues
+Each value in the count list corresponds to a tissue/cell in the same positional order as the 'tissues' list.
+By convention, cells are implicitly considered as tissues.
 """
 
 # Module for reading .gz files without manual decompression
