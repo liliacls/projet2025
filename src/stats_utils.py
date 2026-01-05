@@ -13,6 +13,7 @@ The math module is used to perform robust floating-point comparisons
 import math
 
 def total_count_gene(data):
+
     """
     Compute the total number of counts for each gene across all tissues/cells
 
@@ -97,6 +98,7 @@ def min_max_items(d, max_limit=10, rel_tol: float = 1e-9, abs_tol: float = 1e-12
     return min_items, min_val, max_items, max_val
 
 def summarize(tissues, data, max_limit=10):
+
     """
     Summarize minimum and maximum total counts for both genes and tissues/cells
     
