@@ -1,4 +1,15 @@
-# Used for numerical tolerance-based comparison of floating-point values
+"""
+Statistical utility functions for gene expression matrix analysis
+
+This module provides functions to compute summary statistics from an expression count matrix:
+- Total read counts per gene
+- Total read counts per tissue/cell
+- Identification of minimum and maximum total counts
+- Structured summaries of statistical results
+
+The math module is used to perform robust floating-point comparisons
+"""
+
 import math
 
 def total_count_gene(data):
@@ -56,7 +67,7 @@ def min_max_items(d, max_limit=10, rel_tol: float = 1e-9, abs_tol: float = 1e-12
     
     Returns
     ------
-    tuples --> 
+    tuples :
     - min_items (list): Keys with the minimum value (up to max_limit)
     - min_val (float): Minimum value found in the dictionary
     - max_items (list): Keys with the maximum value (up to max_limit)

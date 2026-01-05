@@ -1,16 +1,16 @@
 """
 Unit test for the gene expression matrix loading function
 
-Uses a reduced ARCHS4 file (mini version) containing 5 genes and 14 tissues/cells.
+Uses a reduced ARCHS4 file (mini version) containing 5 genes and 14 tissues/cells
  
-Checks that:
-- the file is correctly read
-- returned objects have the correct types
-- matrix dimensions are consistent
-- all counts are floats (normalization)
+Checks that :
+- The file is correctly read
+- Returned objects have the correct types
+- Matrix dimensions are consistent
+- All counts are floats (normalization)
 
-
-To run the test:
+Run
+---
 PYTHONPATH=src pytest -s -q tests/test_io_utils.py
 """
 

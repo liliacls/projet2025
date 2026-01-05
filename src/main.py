@@ -1,11 +1,34 @@
+"""
+Main script for the analysis and visualization of a gene expression matrix
+
+The workflow separates data loading, statistical analysis, visualization, and reporting to ensure clarity and modularity
+
+The os module is used to handle file system operations such as creating output directories and building platform-independent file paths
+
+The webbrowser module is used to automatically open the generated HTML report in the default web browser
+"""
+
 import os
 import webbrowser
 
-from io_utils import load_archs4
+from io_utils import load_matrix
 from stats_utils import total_count_tissue, total_count_gene, summarize
 from plotting import plot_tissue_total, plot_gene_total
 
-def generate_html_report(path, tissues, data):
+def generate_html_report(report_dir, path, tissues, data):
+   
+    """ 
+    Generate an HTML summary report for a gene expression matrix.
+
+    The report includes :
+    - Name and path of the input expression matrix file
+    - Number of tissues/cells and genes
+    - Visualization of the top 10 tissues and genes by total read counts
+    
+    The HTML report displays plots that are generated separately by the plotting functions
+    """
+
+    # HTML content of the report
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,36 +90,59 @@ def generate_html_report(path, tissues, data):
 </body>
 </html>
 """
-    with open("web_report/report.html", "w", encoding="utf-8") as f:
+    # Build the path to the HTML report file
+    report_file = os.path.join(report_dir, "report.html")
+    
+    # Write the HTML content to disk using UTF-8 encoding
+    with open(report_file, "w", encoding="utf-8") as f:
         f.write(html)
 
-
 def main():
-    path = "../data/ARCHS4.tsv.gz"
 
+    """ Main entry point of the program
+    
+    This program :
+    --------------
+    1. Loads the expression matrix from a TSV/TSV.GZ file
+    2. Computes total read counts per gene and per tissue/cell
+    3. Identifies genes and tissues with minimum and maximum total counts
+    4. Generates bar plots for the top 10 genes and tissues
+    5. Creates and opens an HTML summary report
+    """
+
+    # Path to the input expression matrix
+    path = "../data/ARCHS4.tsv.gz"
+    report_dir = "web_report"
+   
    
     print()
     print("Expression matrix — summary report")
     print("**********************************")
   
-    # PARTIE 1 : Lecture matrice
-    
-    tissues, data = load_archs4(path)
+    # -----------------------------------
+    # PART 1 : Load the expression matrix
+    # -----------------------------------
+    tissues, data = load_matrix(path)
+   
     print()
     print("Input data")
     print("**********")
-    print("File:",path)
+    print("File:", path)
     print("Number of tissues/cells :", len(tissues))
     print("Number of genes :", len(data))
    
+    # ----------------------------------------------
+    # PART 2 : Compute totals and summary statistics
+    # ----------------------------------------------
 
-    # PARTIE 2 : Totaux + min/max
-  
+    # Total read counts per tissue/cell
     tissue_totals = total_count_tissue(tissues, data)
+
+    # Total read counts per gene
     gene_totals = total_count_gene(data)
 
+    # Summary of min/max values for genes and tissues
     summary = summarize(tissues, data)
-
 
     print()
     print("Gene-level total counts")
@@ -114,17 +160,24 @@ def main():
     print("Max total counts :", summary["tissues"]["max"]["value"])
     print("Tissue(s) :", ", ".join(summary["tissues"]["max"]["names"]))
 
-     
-    # PARTIE 3 
-    os.makedirs("web_report", exist_ok=True)
+    # ---------------------------------------
+    # PART 3 : Generate plots and HTML report
+    # ---------------------------------------
 
-    plot_tissue_total(tissue_totals, top_n=10, log_scale=True, output_path="web_report/top_tissues.png" )
+    # Create the output directory if it does not already exist
+    os.makedirs(report_dir, exist_ok=True)
+
+    # Generate and save the bar plot for tissues/cells
+    plot_tissue_total(tissue_totals, top_n=10, log_scale=True, output_path=os.path.join(report_dir, "top_tissues.png"))
    
-    plot_gene_total(gene_totals, top_n=10, log_scale=True, output_path="web_report/top_genes.png")
+    # Generate and save the bar plot for genes
+    plot_gene_total(gene_totals, top_n=10, log_scale=True, output_path=os.path.join(report_dir, "top_genes.png"))
 
-    generate_html_report(path, tissues, data)
-
-    report_path = os.path.abspath("web_report/report.html")
+    # Generate the HTML summary report
+    generate_html_report(report_dir, path, tissues, data)
+    
+    # Open the HTML report in the default web browser
+    report_path = os.path.abspath(os.path.join(report_dir, "report.html"))
     webbrowser.open("file://" + report_path)
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-
 """ 
 Load an ARCHS4-like gene expression matrix
 
@@ -22,7 +21,7 @@ All other statistics are ignored
 
 Returns
 -------
-tuples -->
+tuples :
 - tissues : list[str]
   Names of tissues/cells corresponding to the columns of the matrix
 - data : dict[str, list[float]]
