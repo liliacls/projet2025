@@ -1,5 +1,5 @@
 """
-Statistical utility functions for gene expression matrix analysis
+Statistical utility functions for gene expression matrix analysis.
 
 This module provides functions to compute summary statistics from an expression count matrix:
 - Total read counts per gene
@@ -7,7 +7,7 @@ This module provides functions to compute summary statistics from an expression 
 - Identification of minimum and maximum total counts
 - Structured summaries of statistical results
 
-The math module is used to perform robust floating-point comparisons
+The math module is used to perform robust floating-point comparisons.
 """
 
 import math
@@ -15,12 +15,12 @@ import math
 def total_count_gene(data):
 
     """
-    Compute the total number of counts for each gene across all tissues/cells
+    Compute the total number of counts for each gene across all tissues/cells.
 
     Returns
     -------
     dict[str, float]
-    Dictionary mapping each gene to the sum of its counts across all tissues/cells genes
+    Dictionary mapping each gene to the sum of its counts across all tissues/cells genes.
     
     Example
     -------
@@ -32,12 +32,12 @@ def total_count_gene(data):
 def total_count_tissue(tissues, data):
 
     """ 
-    Compute the total number of counts for each tissue/cell across all genes
+    Compute the total number of counts for each tissue/cell across all genes.
 
     Returns 
     -------
     dict[str, float] 
-    Dictionary mapping each tissue/cell to the total count across all genes
+    Dictionary mapping each tissue/cell to the total count across all genes.
 
     Example
     -------
@@ -61,10 +61,10 @@ def total_count_tissue(tissues, data):
 def min_max_items(d, max_limit=10, rel_tol: float = 1e-9, abs_tol: float = 1e-12):
 
     """
-    Identify the keys associated with the minimum and maximum values in a dictionary
+    Identify the keys associated with the minimum and maximum values in a dictionary.
 
-    If multiple keys share the same minimum or maximum value, up to 'max_limit' keys are returned 
-    Floating-point comparisons are performed using a numerical tolerance to ensure robust detection of ties
+    If multiple keys share the same minimum or maximum value, up to 'max_limit' keys are returned.
+    Floating-point comparisons are performed using a numerical tolerance to ensure robust detection of ties.
     
     Returns
     ------
@@ -100,10 +100,10 @@ def min_max_items(d, max_limit=10, rel_tol: float = 1e-9, abs_tol: float = 1e-12
 def summarize(tissues, data, max_limit=10):
 
     """
-    Summarize minimum and maximum total counts for both genes and tissues/cells
+    Summarize minimum and maximum total counts for both genes and tissues/cells.
     
     This function computes total counts per gene and per tissue/cell, 
-    then identifies the genes and tissues with the minimum and maximum total counts
+    then identifies the genes and tissues with the minimum and maximum total counts.
 
     Returns
     -------
