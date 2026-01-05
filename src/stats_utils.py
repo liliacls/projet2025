@@ -1,7 +1,7 @@
 """
 Statistical utility functions for gene expression matrix analysis.
 
-This module provides functions to compute summary statistics from an expression count matrix:
+This module provides functions to compute summary statistics from an expression count matrix :
 - Total read counts per gene
 - Total read counts per tissue/cell
 - Identification of minimum and maximum total counts
@@ -74,6 +74,7 @@ def min_max_items(d, max_limit=10, rel_tol: float = 1e-9, abs_tol: float = 1e-12
     - max_items (list): Keys with the maximum value (up to max_limit)
     - max_val (float): maximum value found in the dictionary
     """
+    
     if not d:
         raise ValueError("Input dictionary is empty")
    
