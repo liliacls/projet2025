@@ -1,3 +1,6 @@
 __pycache__/
 web_report/data/
 *.tsv.gz
+data/
+*.tsv
+*.tsv.gz
