@@ -1,11 +1,11 @@
 """
-Main script for the analysis and visualization of a gene expression matrix
+Main script for the analysis and visualization of a gene expression matrix.
 
-The workflow separates data loading, statistical analysis, visualization, and reporting to ensure clarity and modularity
+The workflow separates data loading, statistical analysis, visualization, and reporting to ensure clarity and modularity.
 
-The os module is used to handle file system operations such as creating output directories and building platform-independent file paths
+The os module is used to handle file system operations such as creating output directories and building platform-independent file paths.
 
-The webbrowser module is used to automatically open the generated HTML report in the default web browser
+The webbrowser module is used to automatically open the generated HTML report in the default web browser/
 """
 
 import os
@@ -25,7 +25,7 @@ def generate_html_report(report_dir, path, tissues, data):
     - Number of tissues/cells and genes
     - Visualization of the top 10 tissues and genes by total read counts
     
-    The HTML report displays plots that are generated separately by the plotting functions
+    The HTML report displays plots that are generated separately by the plotting functions.
     """
 
     # HTML content of the report
