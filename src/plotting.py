@@ -1,13 +1,13 @@
 """
-Module dedicated to data visualization for the gene expression analysis
+Module dedicated to data visualization for the gene expression analysis.
 
 This module provides functions to generate bar plots illustrating:
 - The top tissues/cells by total read counts
 - The top genes by total read counts
 
-Matplotlib is used to create publication-quality figures that can either be displayed interactively or saved as PNG files for inclusion in an HTML summary report
+Matplotlib is used to create publication-quality figures that can either be displayed interactively or saved as PNG files for inclusion in an HTML summary report.
 
-The plotting functions are designed to be reusable and configurable : number of elements displayed, logarithmic scale)
+The plotting functions are designed to be reusable and configurable : number of elements displayed, logarithmic scale.
 """
 
 import matplotlib.pyplot as plt
