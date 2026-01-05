@@ -1,5 +1,5 @@
 __pycache__/
-web_report/data/
+src/web_report/
 data/
 *.tsv
 *.tsv.gz
