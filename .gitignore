@@ -1,2 +1,3 @@
 __pycache__/
-web_report/
+web_report/data/
+*.tsv.gz
