@@ -1,6 +1,7 @@
 # Project - Gene Expression Count Matrix Analysis
 Programming project - M1 BIMS
-University of Rouen Normandy - 2025
+
+University of Rouen Normandie - 2025
 
 # Project Objective
 
@@ -15,24 +16,43 @@ This project implements a small analysis pipeline for a gene expression count ma
 # Project Structure
 
 PROJET2025/
+
 ├── .pytest_cache/
+
 ├── data/
+
 │   └── ARCHS4.tsv
+
 │   └── ARCHS4.tsv.gz
+
 │   └── mini_ARCHS4.tsv
+
 │   └── mini_ARCHS4.tsv.gz
+
 ├── src/
+
 │   ├── __init__.py
+
 │   ├── main.py
+
 │   ├── io_utils.py
+
 │   ├── stats_utils.py
+
 │   └── plotting.py
+
 ├── tests/
+
 │   ├── __init__.py
+
 │   ├── test_io_utils.py
+
 │   └── test_stats_utils.py
+
 ├── .gitignore
+
 ├── README.md
+
 └── requirements.txt
 
 # Dependency Installation
@@ -59,15 +79,13 @@ python src/main.py data/file.tsv
 
 python src/main.py data/ARCHS4.tsv
 
-Both .tsv and .tsv.gz files are supported.
-
 # Unit Tests
 
 - Run all tests : 
 
 PYTHONPATH=src pytest -s
 
-Run a specific test module :
+- Run a specific test module :
 
 PYTHONPATH=src pytest -s tests/test_stats_utils.py
 PYTHONPATH=src pytest -s tests/test_io_utils.py
@@ -79,11 +97,10 @@ PYTHONPATH=src pytest -s tests/test_io_utils.py
 PYTHONPATH=src pytest -s --cov=src --cov-report=html
 
 - Open the report:
+  
+Linux : xdg-open htmlcov/index.html
 
-# Linux
-xdg-open htmlcov/index.html
-# macOS
-open htmlcov/index.html
-# Windows
-start htmlcov/index.html
+macOS : open htmlcov/index.html
+
+Windows : start htmlcov/index.html
 
