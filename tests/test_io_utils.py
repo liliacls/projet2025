@@ -1,13 +1,13 @@
 """
-Unit test for the gene expression matrix loading function
+Unit test for the gene expression matrix loading function.
 
-Uses a reduced ARCHS4 file (mini version) containing 5 genes and 14 tissues/cells
+Uses a reduced ARCHS4 file (mini version) containing 5 genes and 14 tissues/cells.
  
-Checks that :
+Checks that:
 - The file is correctly read
 - Returned objects have the correct types
 - Matrix dimensions are consistent
-- All counts are floats (normalization)
+- All counts are stored as floats
 
 Run
 ---
@@ -25,7 +25,11 @@ def test_load_matrix():
     assert isinstance(tissues, list)
     assert isinstance(data, dict)
 
-    # Check that each gene is associated with :
+    # Check expected dimensions
+    assert len(tissues) == 14
+    assert len(data) == 5
+
+    # Check that each gene is associated with:
     # - a string identifier
     # - one numerical value per tissue/cell
     # - expression values stored as floats
