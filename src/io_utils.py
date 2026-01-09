@@ -1,9 +1,9 @@
 """ 
-Load an ARCHS4-like gene expression matrix.
+Load a gene expression matrix.
 
 The input file can be provided in either .tsv or .tsv.gz format.
 
-The expected matrix structure (tab-separated): 
+Expected matrix structure (tab-separated): 
 
                  tissue1    tissu2    tissu3    ...
 GENE1   count     63         ...
@@ -16,12 +16,12 @@ GENE1   50%       21
 GENE1   75%       99
 GENE2   ...       ...
 
-Only rows with stat == "count" are retained
-All other statistics are ignored
+Only rows with stat == "count" are retained.
+All other statistics are ignored.
 
 Returns
 -------
-tuples :
+tuple :
 - tissues : list[str]
   Names of tissues/cells corresponding to the columns of the matrix
 - data : dict[str, list[float]]
@@ -30,12 +30,14 @@ tuples :
  Example
  -------
 - tissues = ['tissue1', 'tissue2', 'tissue3']
-- data = { 'GENE1': [63, 120, 5],
-           'GENE2': [0, 15, 2],
-           'GENE3': [42, 87, 10]}
+- data = { 
+        'GENE1': [63, 120, 5],
+        'GENE2': [0, 15, 2],
+        'GENE3': [42, 87, 10]
+        }
 
-Note
-----
+Notes
+-----
 Each value in the count list corresponds to a tissue/cell in the same positional order as the 'tissues' list.
 By convention, cells are implicitly considered as tissues.
 """
@@ -43,7 +45,7 @@ By convention, cells are implicitly considered as tissues.
 # Module for reading .gz files without manual decompression
 import gzip
 
-def load_matrix(path="ARCHS4.tsv.gz"):
+def load_matrix(path):
     opener = gzip.open if path.endswith(".gz") else open
 
     with opener(path, "rt", encoding="utf-8") as f:
@@ -51,7 +53,7 @@ def load_matrix(path="ARCHS4.tsv.gz"):
             # Read header
             header = f.readline().rstrip("\n").split("\t")
             if len(header) < 3:
-                    raise ValueError
+                 raise ValueError("Invalid header")
            
             tissues = header[2:]
             data = {}

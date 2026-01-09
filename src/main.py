@@ -6,9 +6,12 @@ The workflow separates data loading, statistical analysis, visualization, and re
 The os module is used to handle file system operations such as creating output directories and building platform-independent file paths.
 
 The webbrowser module is used to automatically open the generated HTML report in the default web browser/
+
+The sys module 
 """
 
 import os
+import sys
 import webbrowser
 
 from io_utils import load_matrix
@@ -98,23 +101,12 @@ def generate_html_report(report_dir, path, tissues, data):
         f.write(html)
 
 def main():
-
-    """ Main entry point of the program
-    
-    This program :
-    --------------
-    1. Loads the expression matrix from a TSV/TSV.GZ file
-    2. Computes total read counts per gene and per tissue/cell
-    3. Identifies genes and tissues with minimum and maximum total counts
-    4. Generates bar plots for the top 10 genes and tissues
-    5. Creates and opens an HTML summary report
-    """
-
-    # Path to the input expression matrix
-    path = "../data/ARCHS4.tsv.gz"
+    if len(sys.argv) < 2:
+        print("Usage: python main.py <file.tsv or .tsv.gz>")
+        raise SystemExit(1)
+    path = sys.argv[1]
     report_dir = "web_report"
-   
-   
+    
     print()
     print("Expression matrix — summary report")
     print("**********************************")
@@ -137,10 +129,10 @@ def main():
 
     # Total read counts per tissue/cell
     tissue_totals = total_count_tissue(tissues, data)
-
+     
     # Total read counts per gene
     gene_totals = total_count_gene(data)
-
+ 
     # Summary of min/max values for genes and tissues
     summary = summarize(tissues, data)
 
