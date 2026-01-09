@@ -7,11 +7,11 @@ Functions tested
 ----------------
 - total_count_gene : computation of the total number of counts per gene
 - total_count_tissue : computation of the total number of counts per tissue/cell
-- min_max_items : verification of minimum and maximum values and associated key
+- min_max_items : verification of minimum and maximum values and associated keys
 
-This validates :
+This validates:
 - Correct computation of total counts per gene
-- Crrect computation of total counts per tissue
+- Correct computation of total counts per tissue/cell
 - Handling of floating-point values
 - Handling of tie cases
 
@@ -33,7 +33,7 @@ def test_total_count_gene():
     
     result = total_count_gene(data)
     
-    # Verification of total counts computed for each gene
+    # Verify total counts computed for each gene
     assert result == { 'GENE1': pytest.approx(187.4),
                        'GENE2': pytest.approx(777.4),
                        'GENE3': pytest.approx(396.8),
@@ -46,7 +46,7 @@ def test_total_count_tissue():
         "GENE1": [150.3, 25.0, 7.1, 5.0],
         "GENE2": [734.9, 36.0, 2.0, 4.5],
         "GENE3": [333.0, 54.2, 5.0, 4.6],
-        "GENE4": [180.0, 0.0, 7.4, 0.0]
+        "GENE4": [180.0, 0.0, 7.4, 0.0],
         }
     
     result = total_count_tissue(tissues, data)
@@ -61,14 +61,16 @@ def test_total_count_tissue():
         "tissue1": pytest.approx(1398.2),
         "tissue2": pytest.approx(115.2),
         "tissue3": pytest.approx(21.5),
-        "tissue4": pytest.approx(14.1)
+        "tissue4": pytest.approx(14.1),
         }
 
 def test_min_max_items_tissues():
-    tissue_totals = { 'tissue1': 1398.2,
-                      'tissue2': 1398.2,
-                      'tissue3': 21.5,
-                      'tissue4': 14.1}
+    tissue_totals = {
+        'tissue1': 1398.2,
+        'tissue2': 1398.2,
+        'tissue3': 21.5,
+        'tissue4': 14.1,
+        }
     
     min_items, min_val, max_items, max_val = min_max_items(tissue_totals)
     
@@ -78,10 +80,12 @@ def test_min_max_items_tissues():
     assert set(max_items) == {"tissue1", "tissue2"}
 
 def test_min_max_items_genes():
-    gene_totals = { 'GENE1': 187.4,
-                    'GENE2': 777.4,
-                    'GENE3': 396.8,
-                    'GENE4': 187.4}
+    gene_totals = {
+        'GENE1': 187.4,
+        'GENE2': 777.4,
+        'GENE3': 396.8,
+        'GENE4': 187.4,
+        }
      
     min_items, min_val, max_items, max_val = min_max_items(gene_totals)
     

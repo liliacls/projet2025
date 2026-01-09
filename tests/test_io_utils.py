@@ -37,6 +37,3 @@ def test_load_matrix():
         assert isinstance(gene, str)
         assert len(counts) == len(tissues)
         assert all(isinstance(x, float) for x in counts)
-
-    # Printed only if all assertions pass
-    print("Loading test passed successfully ✓")
