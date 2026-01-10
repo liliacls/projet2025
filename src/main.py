@@ -1,13 +1,13 @@
 """
 Main script for the analysis and visualization of a gene expression matrix.
 
-The workflow separates data loading, statistical analysis, visualization, and reporting to ensure clarity and modularity.
+The workflow separates data loading, statistical analysis, visualization and reporting to ensure clarity and modularity.
 
 The os module is used to handle file system operations such as creating output directories and building platform-independent file paths.
 
-The webbrowser module is used to automatically open the generated HTML report in the default web browser/
+The webbrowser module is used to automatically open the generated HTML report in the default web browser.
 
-The sys module 
+The sys module is used to retrieve command-line arguments, allowing the user to specify the input file.
 """
 
 import os
@@ -99,11 +99,16 @@ def generate_html_report(report_dir, path, tissues, data):
     # Write the HTML content to disk using UTF-8 encoding
     with open(report_file, "w", encoding="utf-8") as f:
         f.write(html)
+    
+    # Return the path to the generated report
+    return report_file
 
+# Read input file path from command-line argument
 def main():
     if len(sys.argv) < 2:
         print("Usage: python main.py <file.tsv or .tsv.gz>")
         raise SystemExit(1)
+    
     path = sys.argv[1]
     report_dir = "web_report"
     
@@ -114,6 +119,7 @@ def main():
     # -----------------------------------
     # PART 1 : Load the expression matrix
     # -----------------------------------
+    
     tissues, data = load_matrix(path)
    
     print()
@@ -139,9 +145,9 @@ def main():
     print()
     print("Gene-level total counts")
     print("***********************")
-    print("Min total counts :", (summary["genes"]["min"]["value"]))
+    print("Min total counts :", summary["genes"]["min"]["value"])
     print("Gene(s) :", ", ".join(summary["genes"]["min"]["names"]))
-    print("Max total counts :", (summary["genes"]["max"]["value"]))
+    print("Max total counts :", summary["genes"]["max"]["value"])
     print("Gene(s) :", ", ".join(summary["genes"]["max"]["names"]))
    
     print()
@@ -165,11 +171,9 @@ def main():
     # Generate and save the bar plot for genes
     plot_gene_total(gene_totals, top_n=10, log_scale=True, output_path=os.path.join(report_dir, "top_genes.png"))
 
-    # Generate the HTML summary report
-    generate_html_report(report_dir, path, tissues, data)
-    
-    # Open the HTML report in the default web browser
-    report_path = os.path.abspath(os.path.join(report_dir, "report.html"))
+    # Generate the HTML report and open it in the default web browser
+    report_file = generate_html_report(report_dir, path, tissues, data)
+    report_path = os.path.abspath(report_file)
     webbrowser.open("file://" + report_path)
 
 if __name__ == "__main__":
