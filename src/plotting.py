@@ -1,19 +1,19 @@
 """
-Module dedicated to data visualization for the gene expression analysis.
+Module dedicated to data visualization for gene expression analysis.
 
 This module provides functions to generate bar plots illustrating:
 - The top tissues/cells by total read counts
 - The top genes by total read counts
 
-Matplotlib is used to create publication-quality figures that can either be displayed interactively or saved as PNG files for inclusion in an HTML summary report.
+Matplotlib is used to produce publication-quality figures that can be displayed interactively or saved as PNG files for inclusion in an HTML report.
 
-The plotting functions are designed to be reusable and configurable : number of elements displayed, logarithmic scale.
+The plotting functions are designed to be reusable and configurable: number of items displayed, logarithmic scale, etc.
 """
 
 import matplotlib.pyplot as plt
 
 # ---------------------------------------------------------------------
-# PART 1 : PART 1 : Top 10 tissues / cells with the highest read counts
+# PART 1 : Top 10 tissues / cells with the highest read counts
 # ---------------------------------------------------------------------
 
 def plot_tissue_total(tissue_totals, top_n=10, log_scale=True, output_path=None):
@@ -45,14 +45,14 @@ def plot_tissue_total(tissue_totals, top_n=10, log_scale=True, output_path=None)
         )
 
     # Set axis labels and plot title
-    plt.xlabel("Tissues / Cells", fontsize=12, fontweight="bold")
-    plt.ylabel("Total read counts", fontsize=12, fontweight="bold")
-    plt.title("Total read counts per tissue", fontsize=14, fontweight="bold", pad=15)
+    plt.xlabel("Tissues/Cells", fontsize=12, fontweight="bold")
+    plt.ylabel("Total counts", fontsize=12, fontweight="bold")
+    plt.title("Top tissues/cells by total count", fontsize=14, fontweight="bold", pad=15)
 
     # Apply logarithmic scale to the y-axis if requested
     if log_scale:
         plt.yscale("log")
-        plt.ylabel("Total read counts (log scale)", fontsize=12, fontweight="bold")
+        plt.ylabel("Total counts (log scale)", fontsize=12, fontweight="bold")
 
     # Format tick labels
     plt.xticks(fontsize=10, rotation=45, ha="right")
@@ -107,13 +107,13 @@ def plot_gene_total(gene_totals, top_n=10, log_scale=True, output_path=None):
 
     # Set axis labels and plot title
     plt.xlabel("Genes", fontsize=12, fontweight="bold")
-    plt.ylabel("Total read counts", fontsize=12, fontweight="bold")
-    plt.title("Top genes by total read count", fontsize=14, fontweight="bold", pad=15)
+    plt.ylabel("Total counts", fontsize=12, fontweight="bold")
+    plt.title("Top genes by total count", fontsize=14, fontweight="bold", pad=15)
 
     # Apply logarithmic scale to the y-axis if requested
     if log_scale:
         plt.yscale("log")
-        plt.ylabel("Total read counts (log scale)", fontsize=12, fontweight="bold", labelpad=15)
+        plt.ylabel("Total counts (log scale)", fontsize=12, fontweight="bold", labelpad=15)
     
     # Format tick labels
     plt.xticks(rotation=45, ha="right", fontsize=10)
