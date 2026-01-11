@@ -19,7 +19,7 @@ from io_utils import load_matrix
 def test_load_matrix():
 
     # Load test file
-    tissues, data = load_matrix("data/mini_archs4.tsv.gz")
+    tissues, data = load_matrix("data/mini_ARCHS4.tsv.gz")
 
     # Check the types of returned objects
     assert isinstance(tissues, list)
