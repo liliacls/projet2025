@@ -68,7 +68,7 @@ def min_max_items(d: dict, max_limit: int = 10, rel_tol: float = 1e-9, abs_tol: 
     
     Returns
     ------
-    tuple :
+    tuple:
     - min_items (list): Keys with the minimum value (up to max_limit)
     - min_val (float): Minimum value found in the dictionary
     - max_items (list): Keys with the maximum value (up to max_limit)
@@ -108,7 +108,7 @@ def summarize(tissues, data, max_limit=10):
 
     Returns
     -------
-    dict --> Structured summary dictionary with the following format:
+    dict : Structured summary dictionary with the following format
         {
             "genes": {
                 "min": {"names": [...], "value": float},

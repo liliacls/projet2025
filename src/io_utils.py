@@ -21,7 +21,7 @@ All other statistics are ignored.
 
 Returns
 -------
-tuple :
+tuple:
 - tissues : list[str]
   Names of tissues/cells corresponding to the columns of the matrix
 - data : dict[str, list[float]]
