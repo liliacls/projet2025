@@ -69,6 +69,18 @@ pip install -r requirements.txt
 
 - main.py : Main pipeline. Loads the matrix, computes statistics, generates plots, and exports an HTML report containing results and visualizations.
 
+# Data Folder (Not Included in the Repository)
+
+During development, a data/ directory was created to store the input expression matrices, including:
+
+- ARCHS4.tsv (full dataset, large file)
+
+- mini_ARCHS4.tsv (reduced sample dataset used for quick testing)
+
+These files are not included in the GitHub repository due to their size and to avoid tracking large datasets in version control.
+
+To run the pipeline, users must download or provide their own matrix files and place them inside a local data/ folder at the root of the project.
+
 # Pipeline Execution 
 
 git clone https://github.com/liliacls/projet2025.git
