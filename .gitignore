@@ -1,6 +1,7 @@
-__pycache__/
 src/web_report/
 data/
 *.tsv
 *.tsv.gz
-
+__pycache__/
+.coverage
+htmlcov/
