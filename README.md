@@ -71,6 +71,10 @@ pip install -r requirements.txt
 
 # Pipeline Execution 
 
+git clone https://github.com/liliacls/projet2025.git
+
+cd projet2025
+
 - The input matrix is passed as a command-line argument :
 
 python src/main.py data/file.tsv
