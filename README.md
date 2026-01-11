@@ -88,6 +88,7 @@ PYTHONPATH=src pytest -s
 - Run a specific test module :
 
 PYTHONPATH=src pytest -s tests/test_stats_utils.py
+
 PYTHONPATH=src pytest -s tests/test_io_utils.py
 
 # Code Coverage 
